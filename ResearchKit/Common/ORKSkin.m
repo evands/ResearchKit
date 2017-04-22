@@ -178,10 +178,12 @@ ORKScreenType ORKGetScreenTypeForScreen(UIScreen *screen) {
 
 const CGFloat ORKScreenMetricMaxDimension = 10000.0;
 
+/* MHO: Tighter top margin between nav bar and questions by decreasing ORKScreenMetricTopToCaptionBaseline */
 CGFloat ORKGetMetricForScreenType(ORKScreenMetric metric, ORKScreenType screenType) {
     static  const CGFloat metrics[ORKScreenMetric_COUNT][ORKScreenType_COUNT] = {
         // iPhone 6+,  iPhone 6,  iPhone 5,  iPhone 4,      iPad  iPad 12.9
-        {        128,       128,       100,       100,       218,       218},      // ORKScreenMetricTopToCaptionBaseline
+        /*{        128,       128,       100,       100,       218,       218},      // ORKScreenMetricTopToCaptionBaseline*/
+        {         90,        90,        80,        80,       218,       218},      // ORKScreenMetricTopToCaptionBaseline
         {         35,        35,        32,        24,        35,        35},      // ORKScreenMetricFontSizeHeadline
         {         38,        38,        32,        28,        38,        38},      // ORKScreenMetricMaxFontSizeHeadline
         {         30,        30,        30,        24,        30,        30},      // ORKScreenMetricFontSizeSurveyHeadline
