@@ -40,7 +40,10 @@
     // medium, 17. Increased by 1 due review feedback.
     UIFontDescriptor *descriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleHeadline];
     const CGFloat defaultSize = 17;
-    return ORKMediumFontWithSize([[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue] + 18 - defaultSize);
+    
+    // using system font so we can bold at will; thw medium font .SFUIText-Medium doesn't support faux-bpld
+    //return ORKMediumFontWithSize([[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue] + 18 - defaultSize);
+    return [UIFont systemFontOfSize:([[descriptor objectForKey: UIFontDescriptorSizeAttribute] doubleValue] + 18 - defaultSize)];
 }
 
 @end
