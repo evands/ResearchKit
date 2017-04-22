@@ -42,4 +42,28 @@
     return [UIFont systemFontOfSize:[[descriptor objectForKey:UIFontDescriptorSizeAttribute] doubleValue] - defaultSize + ORKGetMetricForWindow(ORKScreenMetricFontSizeSubheadline, nil)];
 }
 
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    NSMutableAttributedString *reformattedText = [attributedText mutableCopy];
+
+    if ([attributedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL] != nil) {
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        [paragraphStyle setAlignment:self.textAlignment];
+        [reformattedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, reformattedText.length)];
+    }
+
+    UIFontDescriptor *baseDescriptor = [[self class] defaultFont].fontDescriptor;
+    [attributedText enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(UIFont *font, NSRange range, BOOL * _Nonnull stop) {
+        // Instantiate a font with our base font's family, but with the current range's traits
+        UIFontDescriptorSymbolicTraits traits = font.fontDescriptor.symbolicTraits;
+        UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
+        // Maintaining same size as the defaultFont
+        UIFont *newFont = [UIFont fontWithDescriptor:descriptor size:baseDescriptor.pointSize];
+        [reformattedText removeAttribute:NSFontAttributeName range:range];
+        [reformattedText addAttribute:NSFontAttributeName value:newFont range:range];
+    }];
+
+    [super setAttributedText:reformattedText];
+}
+
 @end
