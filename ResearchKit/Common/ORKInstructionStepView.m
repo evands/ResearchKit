@@ -166,14 +166,13 @@
         a = [[NSMutableAttributedString alloc] init];
         [a appendAttributedString:attributedText];
         [a appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
+        [a appendAttributedString:attributedDetail];
 
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         [style setParagraphSpacingBefore:self.headerView.instructionLabel.font.lineHeight * 0.5];
         [style setAlignment:NSTextAlignmentCenter];
-        NSMutableAttributedString *formattedAttributedDetail = [attributedDetail mutableCopy];
-        [formattedAttributedDetail addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, formattedAttributedDetail.length)];
 
-        [a appendAttributedString:formattedAttributedDetail];
+        [a addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, a.length)];
         attributedInstruction = a;
         
     } else if (attributedText || attributedDetail) {

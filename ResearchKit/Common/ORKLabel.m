@@ -76,14 +76,19 @@
 {
     NSMutableAttributedString *reformattedText = [attributedText mutableCopy];
     
-    if ([attributedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL] != nil) {
-        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        [paragraphStyle setAlignment:self.textAlignment];
-        [reformattedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, reformattedText.length)];
-    }
+    // Set text alignment to our label's alignment
+    NSTextAlignment textAlignment = self.textAlignment;
+    [reformattedText enumerateAttribute:NSParagraphStyleAttributeName inRange:NSMakeRange(0, reformattedText.length) options:0 usingBlock:^(NSParagraphStyle *style, NSRange range, BOOL * _Nonnull stop) {
+        if (style.alignment != textAlignment) {
+            NSMutableParagraphStyle *newStyle = [style mutableCopy];
+            newStyle.alignment = textAlignment;
+            [reformattedText addAttribute:NSParagraphStyleAttributeName value:newStyle range:range];
+        }
+    }];
     
+    // Set the font and font size to our label's font & font size
     UIFontDescriptor *baseDescriptor = [[self class] defaultFont].fontDescriptor;
-    [attributedText enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, attributedText.length) options:0 usingBlock:^(UIFont *font, NSRange range, BOOL * _Nonnull stop) {
+    [reformattedText enumerateAttribute:NSFontAttributeName inRange:NSMakeRange(0, reformattedText.length) options:0 usingBlock:^(UIFont *font, NSRange range, BOOL * _Nonnull stop) {
         // Instantiate a font with our base font's family, but with the current range's traits
         UIFontDescriptorSymbolicTraits traits = font.fontDescriptor.symbolicTraits;
         UIFontDescriptor *descriptor = [baseDescriptor fontDescriptorWithSymbolicTraits:traits];
@@ -92,7 +97,7 @@
         [reformattedText removeAttribute:NSFontAttributeName range:range];
         [reformattedText addAttribute:NSFontAttributeName value:newFont range:range];
     }];
-    
+
     [super setAttributedText:reformattedText];
 }
 
