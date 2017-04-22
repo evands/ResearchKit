@@ -893,22 +893,50 @@ enum TaskListRow: Int, CustomStringConvertible {
     (compare with the `valuePickerQuestionTask`).
     */
     private var textChoiceQuestionTask: ORKTask {
-        let textChoiceOneText = NSLocalizedString("Choice 1", comment: "")
-        let textChoiceTwoText = NSLocalizedString("Choice 2", comment: "")
-        let textChoiceThreeText = NSLocalizedString("Choice 3", comment: "")
+        let attributedTextChoiceOneText = try? NSAttributedString(
+            data: NSLocalizedString("<span style=\"font-size: 1.5em\"><i>Choice</i> <u>1</u></span>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
         
-        // The text to display can be separate from the value coded for each choice:
-        let textChoices = [
-            ORKTextChoice(text: textChoiceOneText, value: "choice_1" as NSCoding & NSCopying & NSObjectProtocol),
-            ORKTextChoice(text: textChoiceTwoText, value: "choice_2" as NSCoding & NSCopying & NSObjectProtocol),
-            ORKTextChoice(text: textChoiceThreeText, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol)
-        ]
+        let attributedTextChoiceTwoText = try? NSAttributedString(
+            data: NSLocalizedString("<span style=\"font-size: 1.5em\"><b>Choice</b> <u>2</u></span>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
+        
+        let attributedTextChoiceThreeText = try? NSAttributedString(
+            data: NSLocalizedString("<span style=\"font-size: 1.5em\">Choice 3</span>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
+        
+        var textChoices : [ORKTextChoice]
+        
+        if ((attributedTextChoiceOneText != nil) && (attributedTextChoiceTwoText != nil) && (attributedTextChoiceThreeText != nil)) {
+            // The text to display can be separate from the value coded for each choice:
+            textChoices = [
+                ORKTextChoice(attributedText: attributedTextChoiceOneText!, value: "choice_1" as NSCoding & NSCopying & NSObjectProtocol),
+                ORKTextChoice(attributedText: attributedTextChoiceTwoText!, value: "choice_2" as NSCoding & NSCopying & NSObjectProtocol),
+                ORKTextChoice(attributedText: attributedTextChoiceThreeText!, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol)
+            ]
+            
+        } else {
+            let textChoiceOneText = NSLocalizedString("Choice 1", comment: "")
+            let textChoiceTwoText = NSLocalizedString("Choice 1", comment: "")
+            let textChoiceThreeText = NSLocalizedString("Choice 3", comment: "")
+            
+            // The text to display can be separate from the value coded for each choice:
+            textChoices = [
+                ORKTextChoice(text: textChoiceOneText, value: "choice_1" as NSCoding & NSCopying & NSObjectProtocol),
+                ORKTextChoice(text: textChoiceTwoText, value: "choice_2" as NSCoding & NSCopying & NSObjectProtocol),
+                ORKTextChoice(text: textChoiceThreeText, value: "choice_3" as NSCoding & NSCopying & NSObjectProtocol)
+            ]
+            
+        }
         
         let answerFormat = ORKAnswerFormat.choiceAnswerFormat(with: .singleChoice, textChoices: textChoices)
         
         let questionStep = ORKQuestionStep(identifier: String(describing:Identifier.textChoiceQuestionStep), title: exampleQuestionText, answer: answerFormat)
         
-        questionStep.text = exampleDetailText
+        questionStep.attributedText = exampleAttributedDetailText
         
         return ORKOrderedTask(identifier: String(describing:Identifier.textChoiceQuestionTask), steps: [questionStep])
     }
@@ -1524,6 +1552,13 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     private var exampleDetailText: String {
         return NSLocalizedString("Additional text can go here.", comment: "")
+    }
+    
+    private var exampleAttributedDetailText: NSAttributedString?  {
+        return try? NSAttributedString(
+            data: NSLocalizedString("Additional text can go <b>here</b>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
+            documentAttributes: nil)
     }
     
     private var exampleEmailText: String {
