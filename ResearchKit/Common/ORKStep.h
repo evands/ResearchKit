@@ -149,6 +149,17 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSString *text;
 
 /**
+ Additional attributed text to display for the step in a localized string.
+ 
+ If set, text is ignored.
+ 
+ The additional text is displayed in a smaller font below `title`. If you need to display a
+ long question, it can work well to keep the title short and put the additional content in
+ the `text` property.
+ */
+@property (nonatomic, copy, nullable) NSAttributedString *attributedText;
+
+/**
  The task that contains the step.
  
  The value of `task` is usually set when a step is added to the `ORKOrderedTask` object.

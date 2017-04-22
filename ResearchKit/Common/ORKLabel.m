@@ -66,7 +66,9 @@
 }
 
 - (void)updateAppearance {
-    self.font = [[self class] defaultFont];
+    if (self.attributedText == nil)
+        self.font = [[self class] defaultFont];
+
     [self invalidateIntrinsicContentSize];
 }
 

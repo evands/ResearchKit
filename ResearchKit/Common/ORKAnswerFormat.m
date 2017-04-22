@@ -962,6 +962,7 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
 #pragma mark - ORKTextChoice
 
 @implementation ORKTextChoice {
+    NSAttributedString *_attributedText;
     NSString *_text;
     id<NSCopying, NSCoding, NSObject> _value;
 }
@@ -979,8 +980,18 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     return option;
 }
 
++ (instancetype)choiceWithAttributedText:(NSAttributedString *)text attributedDetailText:(nullable NSAttributedString *)detailText value:(id<NSCopying, NSCoding, NSObject>)value exclusive:(BOOL)exclusive {
+    ORKTextChoice *option = [[ORKTextChoice alloc] initWithAttributedText:text attributedDetailText:detailText value:value exclusive:exclusive];
+    return option;
+}
+
+
 + (instancetype)choiceWithText:(NSString *)text value:(id<NSCopying, NSCoding, NSObject>)value {
     return [ORKTextChoice choiceWithText:text detailText:nil value:value exclusive:NO];
+}
+
++ (instancetype)choiceWithAttributedText:(NSAttributedString *)text value:(id<NSCopying, NSCoding, NSObject>)value {
+    return [ORKTextChoice choiceWithAttributedText:text attributedDetailText:nil value:value exclusive:NO];
 }
 
 - (instancetype)initWithText:(NSString *)text detailText:(NSString *)detailText value:(id<NSCopying,NSCoding,NSObject>)value exclusive:(BOOL)exclusive {
@@ -990,6 +1001,17 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
         _detailText = [detailText copy];
         _value = value;
         _exclusive = exclusive;
+    }
+    return self;
+}
+
+- (instancetype)initWithAttributedText:(NSAttributedString *)text
+                  attributedDetailText:(nullable NSAttributedString *)detailText
+                                 value:(id<NSCopying, NSCoding, NSObject>)value
+                             exclusive:(BOOL)exclusive {
+    if (self = [self initWithText:text.string detailText:detailText.string value:value exclusive:exclusive]) {
+        _attributedText = [text copy];
+        _attributedDetailText = [detailText copy];
     }
     return self;
 }
@@ -1011,6 +1033,8 @@ static NSArray *ork_processTextChoices(NSArray<ORKTextChoice *> *textChoices) {
     __typeof(self) castObject = object;
     return (ORKEqualObjects(self.text, castObject.text)
             && ORKEqualObjects(self.detailText, castObject.detailText)
+            && ORKEqualObjects(self.attributedText, castObject.attributedText)
+            && ORKEqualObjects(self.attributedDetailText, castObject.attributedDetailText)
             && ORKEqualObjects(self.value, castObject.value)
             && self.exclusive == castObject.exclusive);
 }

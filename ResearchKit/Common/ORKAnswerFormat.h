@@ -884,6 +884,18 @@ ORK_CLASS_AVAILABLE
 + (instancetype)choiceWithText:(NSString *)text detailText:(nullable NSString *)detailText value:(id<NSCopying, NSCoding, NSObject>)value exclusive:(BOOL)exclusive;
 
 /**
+ Returns a text choice object that includes the specified primary attributed text, attributed detail text, and exclusivity.
+ 
+ @param text        The attributed primary text that describes the choice in a localized string.
+ @param detailText  The attributed detail text to display below the primary text, in a localized string.
+ @param value       The value to record in a result object when this item is selected.
+ @param exclusive   Whether this choice is to be considered exclusive within the set of choices.
+ 
+ @return A text choice instance.
+ */
++ (instancetype)choiceWithAttributedText:(NSAttributedString *)text attributedDetailText:(nullable NSAttributedString *)detailText value:(id<NSCopying, NSCoding, NSObject>)value exclusive:(BOOL)exclusive;
+
+/**
  Returns a choice object that includes the specified primary text.
  
  @param text        The primary text that describes the choice in a localized string.
@@ -892,6 +904,16 @@ ORK_CLASS_AVAILABLE
  @return A text choice instance.
  */
 + (instancetype)choiceWithText:(NSString *)text value:(id<NSCopying, NSCoding, NSObject>)value;
+
+/**
+ Returns a choice object that includes the specified attributed primary text.
+ 
+ @param text        The attributed primary text that describes the choice in a localized string.
+ @param value       The value to record in a result object when this item is selected.
+ 
+ @return A text choice instance.
+ */
++ (instancetype)choiceWithAttributedText:(NSAttributedString *)text value:(id<NSCopying, NSCoding, NSObject>)value;
 
 /**
  Returns an initialized text choice object using the specified primary text, detail text,
@@ -912,6 +934,30 @@ ORK_CLASS_AVAILABLE
                     exclusive:(BOOL)exclusive NS_DESIGNATED_INITIALIZER;
 
 /**
+ Returns an initialized text choice object using the specified primary attributed text, detail attributed text,and exclusivity.
+ 
+ This method is the designated initializer.
+ 
+ @param text        The primary text that describes the choice in a localized string.
+ @param detailText  The detail text to display below the primary text, in a localized string.
+ @param value       The value to record in a result object when this item is selected.
+ @param exclusive   Whether this choice is to be considered exclusive within the set of choices.
+ 
+ @return An initialized text choice.
+ */
+- (instancetype)initWithAttributedText:(NSAttributedString *)text
+                  attributedDetailText:(nullable NSAttributedString *)detailText
+                                 value:(id<NSCopying, NSCoding, NSObject>)value
+                             exclusive:(BOOL)exclusive;
+/**
+ The text that describes the choice in a localized string, with formatting.
+ If provided, the text property is ignored.
+ 
+ In general, it's best when the text can fit on one line.
+ */
+@property (copy, readonly) NSAttributedString *attributedText;
+
+/**
  The text that describes the choice in a localized string.
  
  In general, it's best when the text can fit on one line.
@@ -926,6 +972,15 @@ ORK_CLASS_AVAILABLE
  answer format is used.
  */
 @property (copy, readonly) id<NSCopying, NSCoding, NSObject> value;
+
+/**
+ The text that provides additional details about the choice in a localized string, with formatting.
+ If provided, the detailText property is ignored.
+ 
+ The detail text can span multiple lines. Note that `ORKValuePickerAnswerFormat` ignores detail
+ text.
+ */
+@property (copy, readonly, nullable) NSAttributedString *attributedDetailText;
 
 /**
  The text that provides additional details about the choice in a localized string.

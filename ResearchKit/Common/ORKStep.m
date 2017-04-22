@@ -91,6 +91,7 @@
     step.title = _title;
     step.optional = _optional;
     step.text = _text;
+    step.attributedText = _attributedText;
     step.shouldTintImages = _shouldTintImages;
     step.useSurveyMode = _useSurveyMode;
     return step;
@@ -106,6 +107,7 @@
     return (ORKEqualObjects(self.identifier, castObject.identifier)
             && ORKEqualObjects(self.title, castObject.title)
             && ORKEqualObjects(self.text, castObject.text)
+            && ORKEqualObjects(self.attributedText, castObject.attributedText)
             && (self.optional == castObject.optional)
             && (self.shouldTintImages == castObject.shouldTintImages)
             && (self.useSurveyMode == castObject.useSurveyMode));
@@ -126,6 +128,7 @@
         ORK_DECODE_OBJ_CLASS(aDecoder, identifier, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, title, NSString);
         ORK_DECODE_OBJ_CLASS(aDecoder, text, NSString);
+        ORK_DECODE_OBJ_CLASS(aDecoder, attributedText, NSAttributedString);
         ORK_DECODE_BOOL(aDecoder, optional);
         ORK_DECODE_OBJ_CLASS(aDecoder, task, ORKOrderedTask);
         ORK_DECODE_BOOL(aDecoder, shouldTintImages);
@@ -138,12 +141,19 @@
     ORK_ENCODE_OBJ(aCoder, identifier);
     ORK_ENCODE_OBJ(aCoder, title);
     ORK_ENCODE_OBJ(aCoder, text);
+    ORK_ENCODE_OBJ(aCoder, attributedText);
     ORK_ENCODE_BOOL(aCoder, optional);
     ORK_ENCODE_BOOL(aCoder, shouldTintImages);
     ORK_ENCODE_BOOL(aCoder, useSurveyMode);
     if ([_task isKindOfClass:[ORKOrderedTask class]]) {
         ORK_ENCODE_OBJ(aCoder, task);
     }
+}
+
+- (void)setAttributedText:(NSAttributedString *)attributedText
+{
+    _attributedText = attributedText;
+    _text = _attributedText.string;
 }
 
 - (NSString *)description {

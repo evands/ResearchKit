@@ -59,10 +59,23 @@
                                      title:(nullable NSString *)title
                                       text:(nullable NSString *)text
                                     answer:(nullable ORKAnswerFormat *)answerFormat {
-
+    
     ORKQuestionStep *step = [[ORKQuestionStep alloc] initWithIdentifier:identifier];
     step.title = title;
     step.text = text;
+    step.answerFormat = answerFormat;
+    return step;
+}
+
++ (instancetype)questionStepWithIdentifier:(NSString *)identifier
+                                     title:(nullable NSString *)title
+                            attributedText:(nullable NSAttributedString *)text
+                                    answer:(nullable ORKAnswerFormat *)answerFormat
+
+{
+    ORKQuestionStep *step = [[ORKQuestionStep alloc] initWithIdentifier:identifier];
+    step.title = title;
+    step.attributedText = text;
     step.answerFormat = answerFormat;
     return step;
 }

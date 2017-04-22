@@ -90,8 +90,14 @@
         cell = [[ORKChoiceViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         cell.immediateNavigation = _immediateNavigation;
         ORKTextChoice *textChoice = [_helper textChoiceAtIndex:index];
-        cell.shortLabel.text = textChoice.text;
-        cell.longLabel.text = textChoice.detailText;
+        if (textChoice.attributedText)
+            cell.shortLabel.attributedText = textChoice.attributedText;
+        else
+            cell.shortLabel.text = textChoice.text;
+        if (textChoice.attributedDetailText)
+            cell.longLabel.attributedText = textChoice.attributedDetailText;
+        else
+            cell.longLabel.text = textChoice.detailText;
         
         _cells[@(index)] = cell;
         
