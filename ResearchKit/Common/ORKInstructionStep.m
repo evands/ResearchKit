@@ -59,6 +59,7 @@
         ORK_DECODE_IMAGE(aDecoder, image);
         ORK_DECODE_IMAGE(aDecoder, auxiliaryImage);
         ORK_DECODE_IMAGE(aDecoder, iconImage);
+        ORK_DECODE_OBJ_CLASS(aDecoder, attributedDetailText, NSAttributedString);
     }
     return self;
 }
@@ -70,6 +71,7 @@
     ORK_ENCODE_IMAGE(aCoder, image);
     ORK_ENCODE_IMAGE(aCoder, auxiliaryImage);
     ORK_ENCODE_IMAGE(aCoder, iconImage);
+    ORK_ENCODE_OBJ(aCoder, attributedDetailText);
 }
 
 + (BOOL)supportsSecureCoding {
@@ -79,6 +81,7 @@
 - (instancetype)copyWithZone:(NSZone *)zone {
     ORKInstructionStep *step = [super copyWithZone:zone];
     step.detailText = self.detailText;
+    step.attributedDetailText = self.attributedDetailText;
     step.footnote = self.footnote;
     step.image = self.image;
     step.auxiliaryImage = self.auxiliaryImage;
@@ -92,10 +95,17 @@
     __typeof(self) castObject = object;
     return isParentSame &&
         ORKEqualObjects(self.detailText, castObject.detailText) &&
+        ORKEqualObjects(self.attributedDetailText, castObject.attributedDetailText) &&
         ORKEqualObjects(self.footnote, castObject.footnote) &&
         ORKEqualObjects(self.image, castObject.image) &&
         ORKEqualObjects(self.auxiliaryImage, castObject.auxiliaryImage) &&
         ORKEqualObjects(self.iconImage, castObject.iconImage);
+}
+
+- (void)setAttributedDetailText:(NSAttributedString *)attributedDetailText
+{
+    _attributedDetailText = attributedDetailText;
+    self.detailText = _attributedDetailText.string;
 }
 
 - (NSUInteger)hash {
