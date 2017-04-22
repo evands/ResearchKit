@@ -93,8 +93,11 @@
             for (int i = 0; i <= numberOfSteps; i++) {
                 ORKTextChoice *textChoice = textChoices[i];
                 ORKScaleRangeLabel *stepLabel = [[ORKScaleRangeLabel alloc] initWithFrame:CGRectZero];
-                stepLabel.text = textChoice.text;
                 stepLabel.textAlignment = NSTextAlignmentLeft;
+                if (textChoice.attributedText)
+                    stepLabel.attributedText = textChoice.attributedText;
+                else
+                    stepLabel.text = textChoice.text;
                 stepLabel.numberOfLines = 0;
                 stepLabel.translatesAutoresizingMaskIntoConstraints = NO;
                 [self addSubview:stepLabel];
