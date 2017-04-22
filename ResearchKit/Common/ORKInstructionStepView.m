@@ -144,27 +144,42 @@
     self.headerView.iconImageView.image = _instructionStep.iconImage;
     self.headerView.captionLabel.text = _instructionStep.title;
     
-    NSMutableAttributedString *attributedInstruction = [[NSMutableAttributedString alloc] init];
-    NSString *detail = _instructionStep.detailText;
-    NSString *text = _instructionStep.text;
-    detail = detail.length ? detail : nil;
-    text = text.length ? text : nil;
+    NSAttributedString *attributedText = _instructionStep.attributedText;
+    if (!attributedText) {
+        NSString *text = _instructionStep.text;
+        if (text.length) {
+            attributedText = [[NSAttributedString alloc] initWithString:text attributes:nil];
+        }
+    }
     
-    if (detail && text) {
-        [attributedInstruction appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", text] attributes:nil]];
+    NSAttributedString *attributedDetail = _instructionStep.attributedDetailText;
+    if (!attributedDetail) {
+        NSString *detail = _instructionStep.detailText;
+        if (detail.length) {
+            attributedDetail = [[NSAttributedString alloc] initWithString:detail attributes:nil];
+        }
+    }
+
+    NSAttributedString *attributedInstruction = nil;
+    if (attributedText && attributedDetail) {
+        NSMutableAttributedString *a = [[NSMutableAttributedString alloc] init];
+        a = [[NSMutableAttributedString alloc] init];
+        [a appendAttributedString:attributedText];
+        [a appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n" attributes:nil]];
 
         NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
         [style setParagraphSpacingBefore:self.headerView.instructionLabel.font.lineHeight * 0.5];
         [style setAlignment:NSTextAlignmentCenter];
+        NSMutableAttributedString *formattedAttributedDetail = [attributedDetail mutableCopy];
+        [formattedAttributedDetail addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, formattedAttributedDetail.length)];
+
+        [a appendAttributedString:formattedAttributedDetail];
+        attributedInstruction = a;
         
-        NSAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:detail
-                                                                               attributes:@{NSParagraphStyleAttributeName: style}];
-        [attributedInstruction appendAttributedString:attString];
-        
-    } else if (detail || text) {
-        [attributedInstruction appendAttributedString:[[NSAttributedString alloc] initWithString:detail ? : text attributes:nil]];
+    } else if (attributedText || attributedDetail) {
+        attributedInstruction = (attributedText ?: attributedDetail);
     }
-    
+
     self.headerView.instructionLabel.attributedText = attributedInstruction;
     
     self.continueSkipContainer.footnoteLabel.text = _instructionStep.footnote;
