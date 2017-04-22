@@ -650,6 +650,7 @@ enum TaskListRow: Int, CustomStringConvertible {
         instructionStep.title = NSLocalizedString("Sample Survey", comment: "")
         
         instructionStep.text = exampleDescription
+        instructionStep.attributedDetailText = exampleAttributedDetailText
         
         // Add a question step.
         let questionStepAnswerFormat = ORKBooleanAnswerFormat()
@@ -1556,7 +1557,7 @@ enum TaskListRow: Int, CustomStringConvertible {
     
     private var exampleAttributedDetailText: NSAttributedString?  {
         return try? NSAttributedString(
-            data: NSLocalizedString("Additional text can go <b>here</b>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
+            data: NSLocalizedString("<u>Additional text</u> can go <b>here</b>", comment: "").data(using: String.Encoding.unicode, allowLossyConversion: true)!,
             options: [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType],
             documentAttributes: nil)
     }
