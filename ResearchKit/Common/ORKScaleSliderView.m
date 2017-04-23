@@ -99,6 +99,8 @@
                 else
                     stepLabel.text = textChoice.text;
                 stepLabel.numberOfLines = 0;
+                stepLabel.adjustsFontSizeToFitWidth = YES;
+                stepLabel.minimumScaleFactor = 0.75;
                 stepLabel.translatesAutoresizingMaskIntoConstraints = NO;
                 [self addSubview:stepLabel];
                 [_textChoiceLabels addObject:stepLabel];
