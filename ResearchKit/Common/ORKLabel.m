@@ -79,6 +79,7 @@
     // Set text alignment to our label's alignment
     NSTextAlignment textAlignment = self.textAlignment;
     [reformattedText enumerateAttribute:NSParagraphStyleAttributeName inRange:NSMakeRange(0, reformattedText.length) options:0 usingBlock:^(NSParagraphStyle *style, NSRange range, BOOL * _Nonnull stop) {
+        if (!style) style = [NSParagraphStyle defaultParagraphStyle];
         if (style.alignment != textAlignment) {
             NSMutableParagraphStyle *newStyle = [style mutableCopy];
             newStyle.alignment = textAlignment;
