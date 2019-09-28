@@ -55,10 +55,9 @@ ORK_CLASS_AVAILABLE
 @property (nonatomic, copy, nullable) NSString *detailText;
 
 /**
- Additional detailed explanation for the instruction, attributed
+ Additional attributed explanation for the instruction.
  
- The detail text is displayed below the content of the `text` property.
- If attributedDetailText is set, detailText is ignored.
+ The attributed detail text is displayed below the content of the `text` property and overrides `detailText`.
  */
 @property (nonatomic, copy, nullable) NSAttributedString *attributedDetailText;
 

@@ -117,6 +117,7 @@
             
             _leftRangeDescriptionLabel = [[ORKScaleRangeDescriptionLabel alloc] initWithFrame:CGRectZero];
             _leftRangeDescriptionLabel.numberOfLines = -1;
+            _leftRangeDescriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
             [self addSubview:_leftRangeDescriptionLabel];
             
             _rightRangeLabel = [[ORKScaleRangeLabel alloc] initWithFrame:CGRectZero];
@@ -125,6 +126,7 @@
             
             _rightRangeDescriptionLabel = [[ORKScaleRangeDescriptionLabel alloc] initWithFrame:CGRectZero];
             _rightRangeDescriptionLabel.numberOfLines = -1;
+            _rightRangeDescriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
             [self addSubview:_rightRangeDescriptionLabel];
             
             if (textChoices) {
@@ -179,8 +181,6 @@
             _rightRangeView.translatesAutoresizingMaskIntoConstraints = NO;
             _leftRangeLabel.translatesAutoresizingMaskIntoConstraints = NO;
             _rightRangeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            _leftRangeDescriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
-            _rightRangeDescriptionLabel.translatesAutoresizingMaskIntoConstraints = NO;
         }
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
